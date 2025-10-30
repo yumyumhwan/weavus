@@ -1,0 +1,33 @@
+<form method="post" th:action="@{/admin/products/new}" th:object="${product}">
+  <!-- CSRF -->
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+  <div>
+    <label>SKU</label><br />
+    <input type="text" th:field="*{sku}" />
+    <div th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" style="color:red;"></div>
+  </div>
+
+  <div>
+    <label>상품명</label><br />
+    <input type="text" th:field="*{name}" />
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
+  </div>
+
+  <div>
+    <label>초기 재고</label><br />
+    <input type="number" th:field="*{qtyOnHand}" min="0" />
+    <div th:if="${#fields.hasErrors('qtyOnHand')}" th:errors="*{qtyOnHand}" style="color:red;"></div>
+  </div>
+
+  <div>
+    <label>설명</label><br />
+    <textarea th:field="*{description}"></textarea>
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></div>
+  </div>
+
+  <p>
+    <a th:href="@{/admin/products}">취소</a>
+    <button type="submit">등록</button>
+  </p>
+</form>

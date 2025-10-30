@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>주문/출하 상태</title></head>
+<body>
+  <h2>주문/출하 상태</h2>
+
+  <table border="1" cellpadding="6">
+    <thead>
+      <tr>
+        <th>주문번호</th>
+        <th>상품명 / SKU</th>
+        <th>수량</th>
+        <th>상태</th>
+        <th>작업</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 임시 행 -->
+      <tr>
+        <td>10001</td><td>デモ商品 / SKU-0001</td><td>2</td><td>출하대기</td>
+        <td><button type="button">출하 처리</button></td>
+      </tr>
+      <tr>
+        <td>10002</td><td>マウス / SKU-0002</td><td>1</td><td>출하완료</td>
+        <td>완료</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><a th:href="@{/admin/dashboard}">← 대시보드로</a></p>
+</body>
+</html>

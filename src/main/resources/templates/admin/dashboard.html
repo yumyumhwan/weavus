@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>ダッシュボード</title>
+</head>
+<body>
+  <h2>ダッシュボード (Dashboard)</h2>
+  <p>이 화면은 오늘 주문수/출하수/배송중현황을 보여줄 메인 페이지입니다.</p>
+
+  <p><a th:href="@{/admin/products}">商品/在庫 管理へ</a></p>
+  <p><a th:href="@{/admin/orders}">注文/出荷 状況へ</a></p>
+</body>
+</html>
