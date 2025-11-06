@@ -3,12 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <title>ダッシュボード</title>
+
+  <!-- Bulma -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <style>
+    body {
+      background-color: #e5e5e5;
+      min-height: 100vh;
+    }
+
+    /* 헤더 */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: #e5e5e5;
+      padding: 1rem 2rem 0.5rem 2rem;
+      position: relative;
+    }
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.8rem;
+    }
+    .header-buttons .button {
+      border-radius: 999px;
+      margin-left: 0.5rem;
+    }
+
+    /* 카드 (2배 크기) */
+    .summary-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.75rem;
+      width: 500px;              /* 가로폭 2배 */
+      padding: 5rem 2rem;        /* 세로높이 2배 */
+      text-align: center;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    .summary-value {
+      font-size: 3rem;           /* 숫자 크기도 확대 */
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+
+    /* 버튼 */
+    .pill-button {
+      border-radius: 999px;
+      padding: 0.8rem 2.5rem;
+      font-weight: 500;
+    }
+    .btn-gray {
+      background-color: #8c8c8c;
+      color: #fff;
+    }
+    .btn-black {
+      background-color: #000;
+      color: #fff;
+    }
+
+    /* 중앙 레이아웃 */
+    .center-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 200px);
+      gap: 3rem;
+    }
+    .card-row {
+      display: flex;
+      gap: 4rem;
+    }
+  </style>
 </head>
 <body>
-  <h2>ダッシュボード (Dashboard)</h2>
-  <p>이 화면은 오늘 주문수/출하수/배송중현황을 보여줄 메인 페이지입니다.</p>
 
-  <p><a th:href="@{/admin/products}">商品/在庫 管理へ</a></p>
-  <p><a th:href="@{/admin/orders}">注文/出荷 状況へ</a></p>
+  <!-- 상단 헤더 -->
+  <header class="app-header">
+    <div class="app-title">物流運用管理システム</div>
+
+    <div class="header-right">
+      <div class="header-buttons">
+        <button class="button is-light">管理者</button>
+		<!-- 🔹 로그아웃 폼 -->
+		<form th:action="@{/logout}" method="post" style="display:inline;">
+		  <!-- CSRF 토큰 (시큐리티에서 요구함) -->
+		  <input type="hidden"
+		         th:name="${_csrf.parameterName}"
+		         th:value="${_csrf.token}" />
+		  <button class="button is-dark pill-button" type="submit">
+		    ログアウト
+		  </button>
+		</form>
+      </div>
+      <a th:href="@{/admin/products}"
+         class="button pill-button btn-gray"
+         style="margin-right:0.5rem;">
+        商品/在庫管理
+      </a>
+    </div>
+  </header>
+
+  <!-- 가운데 메인 -->
+  <div class="center-area">
+    <div class="card-row">
+      <div class="summary-box">
+        <div>現在の注文数</div>
+        <div class="summary-value"
+             th:text="${currentOrderCount} + '件'">0件</div>
+      </div>
+      <div class="summary-box">
+        <div>現在の出荷数</div>
+        <div class="summary-value"
+             th:text="${shippedCount} + '件'">0件</div>
+      </div>
+    </div>
+
+    <a th:href="@{/admin/orders}"
+       class="button pill-button btn-black">
+      注文状況確認
+    </a>
+  </div>
+
 </body>
 </html>

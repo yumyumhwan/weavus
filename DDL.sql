@@ -27,12 +27,13 @@ CREATE TABLE products (
 
 -- =========================================================
 -- 2) 주문 / 출하 상태 테이블
+--    status 컬럼은 OrderStatus enum(RECEIVED/PREPARING/SHIPPED)에 맞춤
 -- =========================================================
 CREATE TABLE orders (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,          -- 주문 ID (PK)
     product_id BIGINT NOT NULL,                    -- 상품 ID (FK)
     qty INT NOT NULL,                              -- 주문 수량
-    status VARCHAR(30) NOT NULL DEFAULT '受付済',    -- 상태 (접수/출하대기/출하완료)
+    status VARCHAR(30) NOT NULL DEFAULT 'RECEIVED',-- 상태 (RECEIVED / PREPARING / SHIPPED)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 주문 생성일시
     CONSTRAINT fk_orders_product
         FOREIGN KEY (product_id)
@@ -40,23 +41,10 @@ CREATE TABLE orders (
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- =========================================================
--- ✅ 샘플 데이터 (테스트용)
--- =========================================================
-INSERT INTO products (sku, name, qty_on_hand, description)
-VALUES
-('SKU-001', 'USBケーブル', 120, 'Type-C ケーブル 1m'),
-('SKU-002', 'Bluetoothマウス', 80, '2.4GHz ワイヤレスマウス'),
-('SKU-003', 'ノートパソコンスタンド', 50, '角度調整可能 アルミ製');
 
-INSERT INTO orders (product_id, qty, status)
-VALUES
-(1, 2, '受付済'),
-(2, 1, '出荷待ち'),
-(3, 3, '出荷完了');
 
 -- =========================================================
--- 완료 메시지
+-- 완료 메시지 + 확인용 SELECT
 -- =========================================================
 SELECT '✅ DDL 생성 완료: products / orders 테이블 정상 생성됨' AS message;
 

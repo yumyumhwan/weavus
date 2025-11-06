@@ -1,33 +1,189 @@
-<form method="post" th:action="@{/admin/products/new}" th:object="${product}">
-  <!-- CSRF -->
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>商品登録</title>
 
-  <div>
-    <label>SKU</label><br />
-    <input type="text" th:field="*{sku}" />
-    <div th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" style="color:red;"></div>
+  <!-- Bulma CSS -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <style>
+    body {
+      background-color: #e5e5e5;
+      min-height: 100vh;
+    }
+
+    /* 상단 헤더 (대시보드/상품수정과 통일) */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem 0.5rem 2rem;
+    }
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .header-buttons .button {
+      border-radius: 999px;
+      margin-left: 0.5rem;
+    }
+
+    /* 본문 영역 */
+    .form-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .form-card {
+      text-align: center;
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    .form-card .field {
+      width: 360px;
+      margin: 0 auto 1.2rem auto;
+      text-align: left;
+    }
+
+    .form-card .control .input,
+    .form-card .control .textarea {
+      border-radius: 999px;
+      background-color: #ffffff;
+    }
+
+    .form-card .control .textarea {
+      border-radius: 16px;
+      resize: vertical;
+    }
+
+    .pill-button {
+      border-radius: 999px;
+      padding: 0.6rem 2.2rem;
+      font-weight: 500;
+    }
+    .btn-gray {
+      background-color: #8c8c8c;
+      color: #fff;
+    }
+    .btn-orange-outline {
+      background-color: #ff8c00;
+      color: #fff;
+      border: 3px solid #ff5a00;
+    }
+
+    .button-row {
+      margin-top: 1.8rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 상단 헤더 -->
+<header class="app-header">
+  <div class="app-title">物流運用管理システム</div>
+  <div class="header-buttons">
+    <button class="button is-light">管理者</button>
+	<!-- 🔹 로그아웃 폼 -->
+	<form th:action="@{/logout}" method="post" style="display:inline;">
+	  <!-- CSRF 토큰 (시큐리티에서 요구함) -->
+	  <input type="hidden"
+	         th:name="${_csrf.parameterName}"
+	         th:value="${_csrf.token}" />
+	  <button class="button is-dark pill-button" type="submit">
+	    ログアウト
+	  </button>
+	</form>
   </div>
+</header>
 
-  <div>
-    <label>상품명</label><br />
-    <input type="text" th:field="*{name}" />
-    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
+<section class="section">
+  <div class="form-wrapper">
+    <div class="form-card">
+
+      <!-- 페이지 제목 -->
+      <h2 class="form-title">商品登録</h2>
+
+      <!-- 폼 -->
+      <form method="post"
+            th:action="@{/admin/products/new}"
+            th:object="${product}">
+
+        <!-- CSRF -->
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
+
+        <!-- SKU -->
+        <div class="field">
+          <label class="label">SKUコード</label>
+          <div class="control">
+            <input class="input" type="text" th:field="*{sku}" />
+          </div>
+          <p class="help is-danger"
+             th:if="${#fields.hasErrors('sku')}"
+             th:errors="*{sku}"></p>
+        </div>
+
+        <!-- 상품명 -->
+        <div class="field">
+          <label class="label">商品名</label>
+          <div class="control">
+            <input class="input" type="text" th:field="*{name}" />
+          </div>
+        </div>
+
+        <!-- 수량 -->
+        <div class="field">
+          <label class="label">商品数</label>
+          <div class="control">
+            <input class="input" type="number" min="0" th:field="*{qtyOnHand}" />
+          </div>
+          <p class="help is-danger"
+             th:if="${#fields.hasErrors('qtyOnHand')}"
+             th:errors="*{qtyOnHand}"></p>
+        </div>
+
+        <!-- 설명 -->
+        <div class="field">
+          <label class="label">商品説明</label>
+          <div class="control">
+            <textarea class="textarea"
+                      rows="3"
+                      th:field="*{description}"></textarea>
+          </div>
+          <p class="help is-danger"
+             th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}"></p>
+        </div>
+
+        <!-- 버튼들 -->
+        <div class="button-row">
+          <a class="button pill-button btn-gray"
+             th:href="@{/admin/products}">
+            戻る
+          </a>
+          <button class="button pill-button btn-orange-outline"
+                  type="submit">
+            登録
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
+</section>
 
-  <div>
-    <label>초기 재고</label><br />
-    <input type="number" th:field="*{qtyOnHand}" min="0" />
-    <div th:if="${#fields.hasErrors('qtyOnHand')}" th:errors="*{qtyOnHand}" style="color:red;"></div>
-  </div>
-
-  <div>
-    <label>설명</label><br />
-    <textarea th:field="*{description}"></textarea>
-    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></div>
-  </div>
-
-  <p>
-    <a th:href="@{/admin/products}">취소</a>
-    <button type="submit">등록</button>
-  </p>
-</form>
+</body>
+</html>

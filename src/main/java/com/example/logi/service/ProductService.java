@@ -1,11 +1,16 @@
 package com.example.logi.service;
 
-import com.example.logi.domain.product.Product;
-import com.example.logi.repository.ProductRepository;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.example.logi.domain.product.Product;
+import com.example.logi.repository.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,8 +22,20 @@ public class ProductService {
         this.repo = repo;
     }
 
+ // 1) 전체 목록
     public List<Product> findAll() {
         return repo.findAll();
+    }
+
+    // 2) 페이징용
+    public Page<Product> getPage(int page, int size) {
+        // page는 0부터 시작하니까 -1 해줌 (화면에서는 1부터 보여줄 거라서)
+        Pageable pageable = PageRequest.of(
+                page, 
+                size, 
+                Sort.by(Sort.Direction.DESC, "id")   // id 역순
+        );
+        return repo.findAll(pageable);
     }
 
     @Transactional

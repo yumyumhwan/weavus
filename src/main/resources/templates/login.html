@@ -3,25 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <title>ログイン</title>
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      background-color: #f5f5f5;
+    }
+    .login-card {
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .login-title {
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+    }
+    .pill-input input {
+      border-radius: 999px;
+      background-color: #e5e5e5;
+      border: none;
+    }
+    .pill-button {
+      border-radius: 999px;
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    .btn-login {
+      background-color: #8c8c8c;
+      color: #fff;
+      border: none;
+    }
+    .btn-login:hover {
+      filter: brightness(0.95);
+    }
+    .btn-signup {
+      background-color: #000;
+      color: #fff;
+      border: none;
+    }
+    .btn-signup:hover {
+      filter: brightness(1.05);
+    }
+  </style>
 </head>
 <body>
-  <h2>ログイン</h2>
 
-  <!-- 에러/로그아웃 메시지 -->
-  <div th:if="${param.error}">IDまたはパスワードが正しくありません。</div>
-  <div th:if="${param.logout}">ログアウトしました。</div>
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container">
 
-  <form method="post" th:action="@{/login}">
-    <input type="text" name="username" placeholder="ID (admin)" />
-    <input type="password" name="password" placeholder="Password (1234)" />
+      <div class="login-card">
 
-    <!-- CSRF 토큰 -->
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <!-- 제목 -->
+        <h1 class="has-text-centered login-title mb-6">ログイン</h1>
 
-    <button type="submit">ログイン</button>
-  </form>
+        <!-- 에러/로그아웃 메시지 -->
+        <div th:if="${param.error}"
+             class="notification is-danger is-light is-small">
+          IDまたはパスワードが正しくありません。
+        </div>
+ <!--       <div th:if="${param.logout}"
+             class="notification is-info is-light is-small">
+          ログアウトしました。
+        </div> -->
 
-  <!-- 개발용 바로가기(인증 필요 경로는 로그인 후 접근 가능) -->
-  <p><a th:href="@{/admin/dashboard}">ダッシュボードへ</a></p>
+        <form method="post" th:action="@{/login}">
+          <!-- CSRF -->
+          <input type="hidden"
+                 th:name="${_csrf.parameterName}"
+                 th:value="${_csrf.token}" />
+
+          <!-- ID -->
+          <div class="field pill-input mb-4">
+            <div class="control">
+              <input class="input"
+                     type="text"
+                     name="username"
+                     placeholder="ID" />
+            </div>
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="field pill-input mb-5">
+            <div class="control">
+              <input class="input"
+                     type="password"
+                     name="password"
+                     placeholder="パスワード" />
+            </div>
+          </div>
+
+          <!-- 버튼 영역 -->
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <button type="submit"
+                      class="button pill-button btn-login">
+                ログイン
+              </button>
+            </p>
+            <p class="control">
+              <!-- 아직 기능 없으면 href="#" 정도로 두고 나중에 구현 -->
+              <a class="button pill-button btn-signup"
+                 href="#">
+                新規登録
+              </a>
+            </p>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
 </body>
 </html>
